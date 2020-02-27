@@ -99,7 +99,7 @@
                     <div class="col d-flex">
                         <label class="mr-2">Rojo</label>
                         <div class="custom-control custom-switch">
-                            <input type="checkbox" class="custom-control-input" id="ColorTabla">
+                            <input type="checkbox" class="custom-control-input" id="ColorTabla" v-model="ckeckboxVal" @click="cambiarColor()">
                             <label class="custom-control-label" for="ColorTabla">Azul</label>
                         </div>
                     </div>
@@ -195,6 +195,7 @@ export default {
         nomBodega: '',
         numBodega: '',
         estBodega: '',
+        ckeckboxVal: false,
         tabla_empresa:[
             { bodega: "Bodega 1",producto: "MFDA12678934501", cantidad: 5, fecha:'12/15/7894' },
             { bodega: "Bodega 2",producto: "MFDA12678934501", cantidad: 15, fecha:'12/15/7894' },
@@ -239,6 +240,14 @@ export default {
         agregarProducto(){ this.$refs.modalAgregarProducto.toggle() },
         trasnferirProducto(){ this.$refs.modalTransferirProducto.toggle() },
         activarUsuario(){var respBodega = 'Activo'},
+        cambiarColor(){
+            // alert('lo lee'+ this.ckeckboxVal);
+            if(this.ckeckboxVal == false){
+                document.body.style.backgroundColor='blue';
+            }else{
+                document.body.style.backgroundColor='red';
+            }
+        },
         listarBodegas(){ 
             // console.log("esta");
             let me = this;
