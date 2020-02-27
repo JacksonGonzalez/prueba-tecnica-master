@@ -62,13 +62,15 @@
                     </div>
                 </div>
                 <!-- usuarios -->
+                {{listarUsuarios()}}
                 <div class="border-dark p-2 br-5 my-2">
                     <div class="row mx-0 justify-conent-center pl-2">
                         <b class="mr-2 my-auto">Usuarios</b>
                         <i class="mdi mdi-plus-circle f-22 cr-pointer" />
                     </div>
-                    <div v-for="(data, key) in users" :key="`user-${key}`" class="row mx-0 my-3 px-2">
-                        <el-switch v-model="data.estado" :inactive-text="data.name"> </el-switch>
+                    <div v-for="user in users" :key="user.id" class="row mx-0 my-3 px-2">
+                        <el-switch v-model="user.estado" :inactive-text="user.nombre"> </el-switch>
+                        <!-- <p v-text="user.nombre"></p> -->
                     </div>
                 </div>
                 <!-- Productos -->
@@ -156,8 +158,8 @@ export default {
         colorTabla: 0,
         arrayBodegas : [],
         users: [
-            { name: 'Maria Antonieta', activo: false },
-            { name: 'Arnold Schwarzenegger', activo: false },
+            // { name: 'Maria Antonieta', activo: false },
+            // { name: 'Arnold Schwarzenegger', activo: false },
         ],
         options: [{
             value: 'Option1',
@@ -193,7 +195,7 @@ export default {
         trasnferirProducto(){ this.$refs.modalTransferirProducto.toggle() },
         activarUsuario(){var respBodega = 'Activo'},
         listarBodegas(){ 
-            console.log("esta");
+            // console.log("esta");
             let me = this;
             axios.get('api/bodegas')
             .then(function(response){
@@ -206,8 +208,22 @@ export default {
             }).catch(function (error) {
                 console.log(error);
             });
-
             
+        },
+        listarUsuarios(){ 
+            // console.log("esta");
+            let me = this;
+            axios.get('api/usuarios')
+            .then(function(response){
+                // Asignamos el Array retornado
+                
+                var  usuarios = response.data;
+                me.users = usuarios;
+                // console.log(me.arrayBodegas);
+                // console.log(response.data);
+            }).catch(function (error) {
+                console.log(error);
+            });
             
         },
         initDatatables(){
