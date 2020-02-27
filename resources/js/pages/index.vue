@@ -11,18 +11,18 @@
                             <div class="row mx-0 my-2">
                                 <div class="col">
                                     <label>Nombre Bodega</label>
-                                    <input type="text" class="form-control" name="" value="" />
+                                    <input type="text" class="form-control" v-model="nomBodega" />
                                 </div>
                             </div>
                             <div class="row mx-0 my-2">
                                 <div class="col">
                                     <label>Responsable</label>
-                                    <el-select v-model="value" placeholder="Select"> <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value" /> </el-select>
+                                    <el-select v-model="value" placeholder="Select"> <el-option v-for="user in users" :key="user.value" :label="user.nombre" :value="user.id" /> </el-select>
                                 </div>
                             </div>
                             <div class="row mx-0 mt-2 justify-content-end">
                                 <button type="button" class="btn btn-sm btn-light mr-2" name="button">Cerrar</button>
-                                <button type="button" class="btn btn-sm btn-primary" name="button">Guardar</button>
+                                <button type="button" class="btn btn-sm btn-primary" v-on:click="agregarBodega()">Guardar</button>
                             </div>
                             <i slot="reference" class="mdi mdi-plus-circle f-22 cr-pointer" />
                         </el-popover>
@@ -170,23 +170,8 @@ export default {
         arrayBodegas : [],
         arrayProductos : [],
         users: [],
-        options: [{
-            value: 'Option1',
-            label: 'Option1'
-        }, {
-            value: 'Option2',
-            label: 'Option2'
-        }, {
-            value: 'Option3',
-            label: 'Option3'
-        }, {
-            value: 'Option4',
-            label: 'Option4'
-        }, {
-            value: 'Option5',
-            label: 'Option5'
-        }],
         value: '',
+        nomBodega: '',
         tabla_empresa:[
             { bodega: "Bodega 1",producto: "MFDA12678934501", cantidad: 5, fecha:'12/15/7894' },
             { bodega: "Bodega 2",producto: "MFDA12678934501", cantidad: 15, fecha:'12/15/7894' },
@@ -196,7 +181,7 @@ export default {
         ],
     } },
     mounted(){
-        this.initDatatables();
+        this.initDatatables()
     },
     methods: {
         cambiarEstadoUsuario(){ this.$refs.cambiarEstado.toggle() },
@@ -218,6 +203,24 @@ export default {
                 console.log(error);
             });
             
+        },
+        agregarBodega(){
+            // AGREGAR LAS BODEGAS
+            let me = this;
+            // console.log(me.nomBodega + me.value);
+            axios.post('/api/bodegas',{
+                'nombreBodega': this.nomBodega,
+                'id_responsable': this.value,
+                'estado': 1
+            }).then(function (response) {
+                // me.cerrarModal();
+                this.nomBodega = '',
+                this.value = '',
+                me.listarBodegas();
+                alert("Bodega Guardada");
+            }).catch(function (error) {
+                console.log(error);
+            });
         },
         listarUsuarios(){ 
             // console.log("esta");
@@ -244,7 +247,7 @@ export default {
                 
                 var  productos = response.data;
                 me.arrayProductos = productos;
-                // console.log(me.arrayBodegas);
+                
                 // console.log(response.data);
             }).catch(function (error) {
                 console.log(error);

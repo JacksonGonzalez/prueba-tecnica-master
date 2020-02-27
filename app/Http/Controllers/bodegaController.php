@@ -39,7 +39,11 @@ class bodegaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $bodega = new bodega();
+        $bodega->nombre = $request->nombreBodega;
+        $bodega->id_responsable = $request->id_responsable;
+        $bodega->estado = $request->estado;
+        $bodega->save();
     }
 
     /**

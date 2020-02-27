@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 |
 */
 Route::get('/bodegas', 'bodegaController@index');
+Route::post('/bodegas', 'bodegaController@store');
 Route::get('/usuarios', 'UserController@index');
 Route::get('/productos', 'ProductoController@index');
 Route::group(['middleware' => 'auth:api'], function () {
