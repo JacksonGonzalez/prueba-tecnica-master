@@ -4,6 +4,7 @@
             <div class="col-xl-4 px-0">
                 <!-- bodegas -->
                 <div class="border-dark p-2 br-5 my-2">
+                    <!-- CREAR UNA NUEVA BODEGA -->
                     <div class="row mx-0 pl-2">
                         <b class="mr-2 my-auto">Bodegas</b>
                         <el-popover placement="bottom" title="Crear bodega" width="240" trigger="click" >
@@ -26,14 +27,38 @@
                             <i slot="reference" class="mdi mdi-plus-circle f-22 cr-pointer" />
                         </el-popover>
                     </div>
-                    <div class="row mx-0 my-3">
-                        <p class="mx-2 my-auto"> Bodega 1 </p>
-                        <el-tooltip class="item" effect="light" content="Roberto Gómez Bolaños" placement="top">
-                            <img class="rounded-circle mx-2 obj-cover" height="40" width="40" src="/img/usuarios/anni.jpg" alt="" />
-                        </el-tooltip>
-                        <button type="button" :class="`btn btn-sm my-auto ${respBodega?'btn-success':'btn-danger'}`" name="button" @click="cambiarEstadoUsuario" >
-                            {{respBodega?'Activo':'Inactivo'}}
+
+                    <!-- LISTAR LAS BODEGAS -->{{ listarBodegas()}}
+                    <div class="row mx-0 my-3" v-for="bodega in arrayBodegas" :key="bodega.id">
+                    
+                        <p class="mx-2 my-auto" v-text="bodega.nombre">  </p>
+                       
+                        <!-- CARGAR IMGEN CUANDO NO TIENE -->
+                        <div v-if="bodega.foto == null">
+                                <el-tooltip class="item" effect="light" content="Roberto Gómez Bolaños" placement="top">
+                                    <img class="rounded-circle mx-2 obj-cover" height="40" width="40" src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" alt="" />
+                                </el-tooltip>                    
+                        </div>
+                        <div v-else>
+                                <el-tooltip class="item" effect="light" content="Roberto Gómez Bolaños" placement="top">
+                                    <img class="rounded-circle mx-2 obj-cover" height="40" width="40" :src="bodega.foto" alt="" />
+                                </el-tooltip>                     
+                        </div>
+                        <!-- COLOR DEL ESTADO -->
+                        <div v-if="bodega.estado == 1">
+                            <button type="button" class="btn btn-sm my-auto btn-success" name="button" @click="cambiarEstadoUsuario" >
+                            Activo
                         </button>
+                        </div>
+                        <div v-if="bodega.estado == 0">
+                            <button type="button" class="btn btn-sm my-auto btn-danger" name="button" @click="cambiarEstadoUsuario" >
+                            Inactivo
+                        </button>
+                        </div>
+                       
+                        <!-- <button type="button" :class="`btn btn-sm my-auto ${respBodega?'btn-success':'btn-danger'}`" name="button" @click="cambiarEstadoUsuario" >
+                            {{respBodega?'Activo':'Inactivo'}}
+                        </button> -->
                     </div>
                 </div>
                 <!-- usuarios -->
@@ -117,6 +142,8 @@
 </template>
 
 <script>
+// import $axios from 'axios'   
+
 export default {
     components: {
         modalAgregarProducto: () => import('./modales/modalAgregarProducto'),
@@ -127,6 +154,7 @@ export default {
         respBodega: false,
         product: false,
         colorTabla: 0,
+        arrayBodegas : [],
         users: [
             { name: 'Maria Antonieta', activo: false },
             { name: 'Arnold Schwarzenegger', activo: false },
@@ -163,6 +191,25 @@ export default {
         cambiarEstadoUsuario(){ this.$refs.cambiarEstado.toggle() },
         agregarProducto(){ this.$refs.modalAgregarProducto.toggle() },
         trasnferirProducto(){ this.$refs.modalTransferirProducto.toggle() },
+        activarUsuario(){var respBodega = 'Activo'},
+        listarBodegas(){ 
+            console.log("esta");
+            let me = this;
+            axios.get('api/bodegas')
+            .then(function(response){
+                // Asignamos el Array retornado
+                
+                var  bodegas = response.data;
+                me.arrayBodegas = bodegas;
+                // console.log(me.arrayBodegas);
+                // console.log(response.data);
+            }).catch(function (error) {
+                console.log(error);
+            });
+
+            
+            
+        },
         initDatatables(){
             let that = this;
             let listado_por_legal = $("#listado_por_legal").DataTable({
