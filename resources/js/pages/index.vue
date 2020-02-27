@@ -74,14 +74,25 @@
                     </div>
                 </div>
                 <!-- Productos -->
+                {{listarProductos()}}
                 <div class="border-dark p-2 br-5 my-2">
                     <div class="row mx-0 justify-conent-center">
                         <b class="mr-2 my-auto">Productos</b>
                         <i class="mdi mdi-plus-circle f-22 cr-pointer" />
                     </div>
-                    <div v-for="(data, key) in 2" :key="`prod-${key}`" class="row mx-0 my-3">
-                        <p class="mx-2 my-auto">Tenis nike</p>
-                        <button type="button" :class="`btn btn-sm ${product?'btn-success':'btn-danger'}`" name="button" @click="product=!product">{{product?'Activo':'Inactivo'}}</button>
+                    <div v-for="producto in arrayProductos" :key="producto.id" class="row mx-0 my-3">
+                         <p class="mx-2 my-auto" v-text="producto.nombre"></p>
+                        <div v-if="producto.estado == 1">
+                            <button type="button" class="btn btn-sm btn-success" name="button">
+                                Activo
+                            </button>
+                        </div>
+                        <div v-else>
+                            <button type="button" class="btn btn-sm btn-danger" name="button">
+                                Inactivo
+                            </button>
+                        </div>
+                        
                     </div>
                 </div>
             </div>
@@ -157,10 +168,8 @@ export default {
         product: false,
         colorTabla: 0,
         arrayBodegas : [],
-        users: [
-            // { name: 'Maria Antonieta', activo: false },
-            // { name: 'Arnold Schwarzenegger', activo: false },
-        ],
+        arrayProductos : [],
+        users: [],
         options: [{
             value: 'Option1',
             label: 'Option1'
@@ -219,6 +228,22 @@ export default {
                 
                 var  usuarios = response.data;
                 me.users = usuarios;
+                // console.log(me.arrayBodegas);
+                // console.log(response.data);
+            }).catch(function (error) {
+                console.log(error);
+            });
+            
+        },
+        listarProductos(){ 
+            // console.log("esta");
+            let me = this;
+            axios.get('api/productos')
+            .then(function(response){
+                // Asignamos el Array retornado
+                
+                var  productos = response.data;
+                me.arrayProductos = productos;
                 // console.log(me.arrayBodegas);
                 // console.log(response.data);
             }).catch(function (error) {
