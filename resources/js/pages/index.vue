@@ -46,19 +46,16 @@
                         </div>
                         <!-- COLOR DEL ESTADO -->
                         <div v-if="bodega.estado == 1">
-                            <button type="button" class="btn btn-sm my-auto btn-success" name="button" @click="cambiarEstadoUsuario" >
+                            <button type="button" class="btn btn-sm my-auto btn-success" @click="cambiarEstadoBodega(bodega.id, bodega.estado)" >
                             Activo
                         </button>
                         </div>
                         <div v-if="bodega.estado == 0">
-                            <button type="button" class="btn btn-sm my-auto btn-danger" name="button" @click="cambiarEstadoUsuario" >
+                            <button type="button" class="btn btn-sm my-auto btn-danger" name="button" @click="cambiarEstadoBodega(bodega.id, bodega.estado)" >
                             Inactivo
                         </button>
                         </div>
-                       
-                        <!-- <button type="button" :class="`btn btn-sm my-auto ${respBodega?'btn-success':'btn-danger'}`" name="button" @click="cambiarEstadoUsuario" >
-                            {{respBodega?'Activo':'Inactivo'}}
-                        </button> -->
+                
                     </div>
                 </div>
                 <!-- usuarios -->
@@ -138,14 +135,38 @@
                 </div>
             </div>
         </div>
-        <modal-agregar-producto ref="modalAgregarProducto" />
-        <modal-transferir-producto ref="modalTransferirProducto" />
-        <modal ref="cambiarEstado" titulo="Cambiar estado usuario">
+        <!-- <modal-agregar-producto ref="modalAgregarProducto" />
+        <modal-transferir-producto ref="modalTransferirProducto" /> -->
+
+        <!-- CAMBIAR ESTADO BODEGA -->
+        <modal ref="cambiarEstadoBodega" titulo="Cambiar estado de la Bodega">
+            <div class="row mx-0 my-3 justify-content-center">
+                ¿Está seguro de Activar/Desactivar esta bodega?
+            </div>
+            <div class="row mx-0 mt-2 justify-content-end    py-2">
+                <!-- <button type="button" class="btn btn-sm btn-secondary mr-2" name="button">Cerrar</button> -->
+                <button type="button" class="btn btn-sm btn-primary" @click="cambiarBodega()">Guardar</button>
+            </div>
+        </modal>
+
+        <!-- CAMBIAR ESTADO USUARIO -->
+        <modal ref="cambiarEstadoUsuario" titulo="Cambiar estado usuario">
             <div class="row mx-0 my-3 justify-content-center">
                 ¿Está seguro de Activar/Desactivar este usuario?
             </div>
-            <div class="row mx-0 mt-2 justify-content-end bg-whitesmoke py-2">
-                <button type="button" class="btn btn-sm btn-secondary mr-2" name="button">Cerrar</button>
+            <div class="row mx-0 mt-2 justify-content-end    py-2">
+                <!-- <button type="button" class="btn btn-sm btn-secondary mr-2" name="button">Cerrar</button> -->
+                <button type="button" class="btn btn-sm btn-primary" name="button">Guardar</button>
+            </div>
+        </modal>
+
+        <!-- CAMBIAR ESTADO DE UN PRODUCTO -->
+        <modal ref="cambiarEstadoProducto" titulo="Cambiar estado usuario">
+            <div class="row mx-0 my-3 justify-content-center">
+                ¿Está seguro de Activar/Desactivar este producto?
+            </div>
+            <div class="row mx-0 mt-2 justify-content-end    py-2">
+                <!-- <button type="button" class="btn btn-sm btn-secondary mr-2" name="button">Cerrar</button> -->
                 <button type="button" class="btn btn-sm btn-primary" name="button">Guardar</button>
             </div>
         </modal>
@@ -172,6 +193,8 @@ export default {
         users: [],
         value: '',
         nomBodega: '',
+        numBodega: '',
+        estBodega: '',
         tabla_empresa:[
             { bodega: "Bodega 1",producto: "MFDA12678934501", cantidad: 5, fecha:'12/15/7894' },
             { bodega: "Bodega 2",producto: "MFDA12678934501", cantidad: 15, fecha:'12/15/7894' },
@@ -184,7 +207,35 @@ export default {
         this.initDatatables()
     },
     methods: {
-        cambiarEstadoUsuario(){ this.$refs.cambiarEstado.toggle() },
+        cambiarEstadoUsuario(){ this.$refs.cambiarEstadoUsuario.toggle() },
+        cambiarEstadoBodega(id_bodega, estado_bodega){ 
+            this.$refs.cambiarEstadoBodega.toggle();
+            this.numBodega = id_bodega;
+            this.estBodega = estado_bodega;
+            // console.log(this.numBodega);
+            // console.log(this.estBodega);
+        },
+        cambiarBodega(){
+            // alert(this.numBodega + this.estBodega);
+            // console.log(this.numBodega);
+            // console.log(this.estBodega);
+            let me = this;
+            // console.log(me.nomBodega + me.value);
+            axios.put('/api/bodegas',{
+                'id': this.numBodega,
+                'estado': this.estBodega
+            }).then(function (response) {
+                // me.cerrarModal();
+                this.numBodega = '',
+                this.estBodega = '',
+                me.listarBodegas(),
+                alert("Bodega Actualizada")
+            }).catch(function (error) {
+                console.log(error);
+            });
+        },
+        cambiarEstadoProducto(){ this.$refs.cambiarEstadoProducto.toggle() },
+        // cambiarEstadoBodega(){ this.$refs.cambiarEstado.toggle() },
         agregarProducto(){ this.$refs.modalAgregarProducto.toggle() },
         trasnferirProducto(){ this.$refs.modalTransferirProducto.toggle() },
         activarUsuario(){var respBodega = 'Activo'},

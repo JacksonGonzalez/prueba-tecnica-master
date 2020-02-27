@@ -77,7 +77,15 @@ class bodegaController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $estado = $request->estado;
+        if($estado == 1){
+            $estadoCambiado = '0';
+        }else{
+            $estadoCambiado = '1';
+        }
+        $bodega = bodega::findOrFail($id);
+        $bodega->estado = $estadoCambiado;
+        $bodega->save();
     }
 
     /**
