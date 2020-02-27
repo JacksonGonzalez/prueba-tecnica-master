@@ -131,6 +131,26 @@
                 <div class="row mx-0 my-3">
                     <div class="col overflow-auto">
                         <p class="f-600 my-2 text-center f-18">Historial de movimientos</p>
+                        <table id="listado_por_legal" class="table table-sm table-hover table-striped ">
+                            <thead>
+                                <tr>
+                                    <th class="align-middle">Producto</th>
+                                    <th class="align-middle">Bodega Origen</th>
+                                    <th class="align-middle">Bodega Destino</th>
+                                    <th class="align-middle">Cantidad</th>
+                                    <th class="align-middle text-center">Fecha</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="historial in tabla_historial" :key="historial.id">
+                                    <td v-text="historial.producto"></td>
+                                    <td v-text="historial.bodegaOrigen"></td>
+                                    <td v-text="historial.bodegaDestino"></td>
+                                    <td v-text="historial.cantidad"></td>
+                                    <td v-text="historial.fecha"></td>
+                                </tr>        
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -202,6 +222,13 @@ export default {
             { bodega: "Bodega 3",producto: "MFDA12678934501", cantidad: 25, fecha:'12/15/7894' },
             { bodega: "Bodega 4",producto: "MFDA12678934501", cantidad: 35, fecha:'12/15/7894' },
             { bodega: "Bodega 5",producto: "MFDA12678934501", cantidad: 45, fecha:'12/15/7894' },
+        ],
+        tabla_historial:[
+            { bodegaOrigen: "Bodega 1", bodegaDestino:"Bodega 3", producto: "MFDA12678934501", cantidad: 5, fecha:'12/15/7894' },
+            { bodegaOrigen: "Bodega 2", bodegaDestino:"Bodega 3", producto: "MFDA12678934501", cantidad: 15, fecha:'12/15/7894' },
+            { bodegaOrigen: "Bodega 3", bodegaDestino:"Bodega 3", producto: "MFDA12678934501", cantidad: 25, fecha:'12/15/7894' },
+            { bodegaOrigen: "Bodega 4", bodegaDestino:"Bodega 3", producto: "MFDA12678934501", cantidad: 35, fecha:'12/15/7894' },
+            { bodegaOrigen: "Bodega 5", bodegaDestino:"Bodega 3", producto: "MFDA12678934501", cantidad: 45, fecha:'12/15/7894' },
         ],
     } },
     mounted(){
