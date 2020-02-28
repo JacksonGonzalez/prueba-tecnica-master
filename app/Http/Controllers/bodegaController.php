@@ -26,9 +26,10 @@ class bodegaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function bodegasActivas()
     {
-        //
+        // return bodega::orderBy('created_at', 'ASC')->get();
+        return bodega::where('estado', 1)->get();         
     }
 
     /**

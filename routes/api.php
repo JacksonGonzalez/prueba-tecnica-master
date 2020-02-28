@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 |
 */
 Route::get('/bodegas', 'bodegaController@index');
+Route::get('/bodegas/activas', 'bodegaController@bodegasActivas');
 Route::post('/bodegas', 'bodegaController@store');
 Route::put('/bodegas/update', 'bodegaController@update');
 Route::get('/usuarios', 'UserController@index');
