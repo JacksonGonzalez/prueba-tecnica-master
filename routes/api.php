@@ -17,6 +17,7 @@ Route::get('/bodegas/activas', 'bodegaController@bodegasActivas');
 Route::post('/bodegas', 'bodegaController@store');
 Route::put('/bodegas/update', 'bodegaController@update');
 Route::get('/usuarios', 'UserController@index');
+Route::get('/usuarios/activos', 'UserController@usuariosActivos');
 Route::get('/productos', 'ProductoController@index');
 Route::get('/productos/bodega', 'ProductoController@productoBodega');
 Route::put('/productos/update', 'ProductoController@update');

@@ -22,9 +22,9 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function usuariosActivos()
     {
-        //
+        return User::where('estado', 1)->get();         
     }
 
     /**
