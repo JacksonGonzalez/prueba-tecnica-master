@@ -17,6 +17,7 @@ Route::post('/bodegas', 'bodegaController@store');
 Route::put('/bodegas/update', 'bodegaController@update');
 Route::get('/usuarios', 'UserController@index');
 Route::get('/productos', 'ProductoController@index');
+Route::put('/productos/update', 'ProductoController@update');
 Route::put('/user/update', 'UserController@update');
 Route::group(['middleware' => 'auth:api'], function () {
     Route::post('logout', 'Auth\LoginController@logout');

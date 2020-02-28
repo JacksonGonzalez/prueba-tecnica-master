@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Producto;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -68,9 +69,18 @@ class ProductoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        $id = $request->id;
+        $estado = $request->estado;
+        if($estado == 1){
+            $estadoCambiado = '0';
+        }else{
+            $estadoCambiado = '1';
+        }
+        $producto = Producto::findOrFail($id);
+        $producto->estado = $estadoCambiado;
+        $producto->save();
     }
 
     /**
