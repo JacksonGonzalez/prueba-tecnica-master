@@ -24,9 +24,10 @@ class ProductoController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function productoBodega()
     {
-        //
+        $sql = 'SELECT inv.id, bod.nombre as nombreBodega, pro.nombre as nombreProducto, inv.cantidad, inv.created_at FROM bodegas bod, inventarios inv, productos pro WHERE inv.id_bodega = bod.id AND inv.id_producto = pro.id ORDER BY bod.nombre, pro.nombre';
+        return DB::select($sql);
     }
 
     /**
