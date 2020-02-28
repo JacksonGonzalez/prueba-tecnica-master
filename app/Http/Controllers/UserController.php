@@ -67,9 +67,20 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        $id = $request->id;
+        $estado = $request->estado;
+        if($estado == 1){
+            $estadoCambiado = '0';
+        }else{
+            $estadoCambiado = '1';
+        }
+        $user = User::findOrFail($id);
+        $user->estado = $estadoCambiado;
+        $user->save();
+
+        // return $id.$estadoCambiado;
     }
 
     /**

@@ -72,11 +72,12 @@ class bodegaController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  int  $id  Request $request, 
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
+        $id = $request->id;
         $estado = $request->estado;
         if($estado == 1){
             $estadoCambiado = '0';
@@ -86,6 +87,8 @@ class bodegaController extends Controller
         $bodega = bodega::findOrFail($id);
         $bodega->estado = $estadoCambiado;
         $bodega->save();
+
+        // return $id.$estadoCambiado;
     }
 
     /**
