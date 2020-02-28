@@ -35,7 +35,43 @@ class InventarioController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // VERIFICAR SI YA ESTA ESE PRODUCTO EN ESA BODEGA
+        $idBodega = $request->id_bodega;
+        $idProducto = $request->id_producto;
+        $InvCantidad = $request->cantidad;
+        $datos = array();
+        $datos = Inventario::where('id_bodega', '=', $idBodega)->where('id_producto', '=', $idProducto)->get();
+        // return $datos;
+        $dato = count($datos);
+        if($dato > 0){
+            $id = $datos[0];
+            $invCant = $datos[3];
+        }
+        
+        if($dato == 0){
+            // return($datos.'VACIO');
+            // GUARDAR LOS DATOS
+            $inventario = new Inventario();
+            $inventario->id_bodega = $idBodega;
+            $inventario->id_producto = $idProducto;
+            $inventario->cantidad = $InvCantidad;
+            // $inventario->save();
+            // var_dump($inventario);
+            return $inventario;
+        }else{
+            
+            $inventario = Inventario::find($id);
+            // $inventario->id_bodega = $idBodega;
+            // $inventario->id_producto = $idProducto;
+            $cantidadInv = $InvCantidad + $invCant;
+            // $inventario->cantidad = $cantidadInv;
+            // $inventario->save();
+            // return $InvCantidad;
+            // return $inventario;
+            // var_dump($inventario);
+        }
+
+        
     }
 
     /**
