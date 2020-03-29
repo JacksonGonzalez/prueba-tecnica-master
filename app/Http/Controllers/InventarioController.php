@@ -55,7 +55,7 @@ class InventarioController extends Controller
             $inventario->id_bodega = $idBodega;
             $inventario->id_producto = $idProducto;
             $inventario->cantidad = $InvCantidad;
-            // $inventario->save();
+            $inventario->save();
             // var_dump($inventario);
             return $inventario;
         }else{
